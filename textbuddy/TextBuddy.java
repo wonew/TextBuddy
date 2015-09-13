@@ -256,6 +256,20 @@ public class TextBuddy {
 		}
 		return contents;
 	}
+	
+	/**
+	 * This method sorts all existing content in the .txt file
+	 * 
+	 * @param contents
+	 *            Contains all existing content
+	 * @return ArrayList<String> Returns the sorted contents of the .txt file in alphabetical order
+	 * @exception None.
+	 * @see None.
+	 */
+	public static ArrayList<String> sortContents (ArrayList<String> contents) {
+		Collections.sort(contents);
+		return contents;
+	}
 
 	/**
 	 * This method writes all existing content into the .txt file

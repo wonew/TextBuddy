@@ -34,7 +34,7 @@ public class TextBuddyTest {
 		listToTest.add(SORTED_TEXT_2);
 		listToTest.add(SORTED_TEXT_1);
 		
-		assertEquals(sortedList, TextBuddy.sort(listToTest));
+		assertEquals(sortedList, TextBuddy.sortContents(listToTest));
 	}
 
 }
