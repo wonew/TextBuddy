@@ -87,4 +87,22 @@ public class TextBuddyTest {
 		
 		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword)); // returns null ArrayList
 	}
+	
+	@Test
+	public void testKeywordNotFound() {
+		
+		ArrayList<String> contents = new ArrayList<String>();
+		ArrayList<String> linesFound = new ArrayList<String>();
+		String searchKeyword = "paris";
+		
+		contents.add(SORTED_TEXT_5);
+		contents.add(SORTED_TEXT_4);
+		contents.add(SORTED_TEXT_3);
+		contents.add(SORTED_TEXT_2);
+		contents.add(SORTED_TEXT_1);
+		
+		linesFound.add(searchKeyword + " not found.");
+		
+		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
+	}
 }

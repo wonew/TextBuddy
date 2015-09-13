@@ -24,28 +24,15 @@ import java.util.*;
  * into a .txt file using specified formats. The command format is given by the
  * example interaction below:
  * 
- * Welcome to TextBuddy. mytextfile.txt is ready for use
- * command: add Hey Jude, 
- * added to mytextfile.txt: "Hey Jude, "
- * command: add don't make it bad
- * added to mytextfile.txt: "don't make it bad"
- * command: add Take a sad song and make it better
- * added to mytextfile.txt: "Take a sad song and make it better"
- * command: display
- * 1. Hey Jude, 
- * 2. don't make it bad
- * 3. Take a sad song and make it better
- * command: delete 2
- * deleted from mytextfile.txt: "don't make it bad"
- * command: display
- * 1. Hey Jude, 
- * 2. Take a sad song and make it better
- * command: clear
- * all content deleted from mytextfile.txt
- * command: 
- * display
- * mytextfile.txt is empty
- * command: exit
+ * Welcome to TextBuddy. mytextfile.txt is ready for use command: add Hey Jude,
+ * added to mytextfile.txt: "Hey Jude, " command: add don't make it bad added to
+ * mytextfile.txt: "don't make it bad" command: add Take a sad song and make it
+ * better added to mytextfile.txt: "Take a sad song and make it better" command:
+ * display 1. Hey Jude, 2. don't make it bad 3. Take a sad song and make it
+ * better command: delete 2 deleted from mytextfile.txt: "don't make it bad"
+ * command: display 1. Hey Jude, 2. Take a sad song and make it better command:
+ * clear all content deleted from mytextfile.txt command: display mytextfile.txt
+ * is empty command: exit
  * 
  *
  * @author June Lim
@@ -71,7 +58,7 @@ public class TextBuddy {
 	private static final String MESSAGE_DISPLAY_NUMBER = "%1$s. %2$s";
 	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
 	private static final String ERROR_INVALID_SEARCH = "You have entered an invalid search keyword. Please try again.";
-	
+
 	/**
 	 * This is the main method which uses the command line argument to get the
 	 * user's input on what to name the .txt file.
@@ -168,18 +155,20 @@ public class TextBuddy {
 			contents = readFile(nameOfFile);
 			writeFile(nameOfFile, contents, command, "");
 			break;
-			
+
 		case "SEARCH":
-			// call search function and print out the lines that contains the search keyword
+			// call search function and print out the lines that contains the
+			// search keyword
 			contents = readFile(nameOfFile);
 			String keyword = readNewContent(sc);
 			ArrayList<String> linesFound = search(contents, keyword);
-			
-			if (linesFound == null) {
+
+			if (linesFound == null || keyword.equals(MESSAGE_INVALID_FORMAT)) {
 				System.out.println(ERROR_INVALID_SEARCH);
 			} else {
 				printLinesFound(linesFound, keyword);
 			}
+			break;
 
 		case "EXIT":
 			System.exit(0); // terminate program
@@ -193,26 +182,23 @@ public class TextBuddy {
 	/**
 	 * This method prints out the lines that contains the search keyword
 	 * 
-	 * @param sc
-	 *            The Scanner pointer created in the main method to scan for
-	 *            user input
-	 * @return String The command that is read from user input
+	 * @param linesFound
+	 *            Contains the lines that contains the search keyword
+	 * @param keyword
+	 *            The search keyword used
+	 * @return Nothing.
 	 * @exception None.
 	 * @see None.
 	 */
 	private static void printLinesFound(ArrayList<String> linesFound, String keyword) {
 		int numOfLines = linesFound.size();
-		
-		System.out.print("Lines containing " + keyword + ": ");
+
+		System.out.println("Lines containing " + keyword + ": ");
 		for (int i = 0; i < numOfLines; i++) {
-			if (i+1 == numOfLines) {
-				System.out.print((i+1) + linesFound.get(i));
-				System.out.println();
-			}
-			System.out.print((i+1) + linesFound.get(i) + ", ");
+			System.out.println((i + 1) + ". " + linesFound.get(i));
 		}
 	}
-	
+
 	/**
 	 * This method reads the cammands from the user and converts the entire
 	 * String into upper case
@@ -241,15 +227,15 @@ public class TextBuddy {
 	 * @see None.
 	 */
 	private static String readNewContent(Scanner sc) {
-		
+
 		String newContent = "";
-		
+
 		try {
 			newContent = sc.nextLine().substring(1);
 		} catch (StringIndexOutOfBoundsException e) {
 			return MESSAGE_INVALID_FORMAT;
 		}
-	
+
 		return newContent;
 
 	}
@@ -292,42 +278,45 @@ public class TextBuddy {
 		}
 		return contents;
 	}
-	
+
 	/**
 	 * This method sorts all existing content in the .txt file
 	 * 
 	 * @param contents
 	 *            Contains all existing content
-	 * @return ArrayList<String> Returns the sorted contents of the .txt file in alphabetical order
+	 * @return ArrayList<String> Returns the sorted contents of the .txt file in
+	 *         alphabetical order
 	 * @exception None.
 	 * @see None.
 	 */
-	public static ArrayList<String> sortContents (ArrayList<String> contents) {
+	public static ArrayList<String> sortContents(ArrayList<String> contents) {
 		Collections.sort(contents);
 		return contents;
 	}
-	
+
 	/**
-	 * This method searches for specified keywords in the contents of the .txt file
+	 * This method searches for specified keywords in the contents of the .txt
+	 * file
 	 * 
 	 * @param contents
 	 *            Contains all existing content
 	 * @param keyword
 	 *            The keyword to be searched for
-	 * @return ArrayList<Integer> Returns the list of lines containing the specified keyword
+	 * @return ArrayList<Integer> Returns the list of lines containing the
+	 *         specified keyword
 	 * @exception None.
 	 * @see None.
 	 */
-	public static ArrayList<String> search (ArrayList<String> contents, String keyword) {
-		
-		ArrayList<String> linesFound = new ArrayList<String> ();
-		
+	public static ArrayList<String> search(ArrayList<String> contents, String keyword) {
+
+		ArrayList<String> linesFound = new ArrayList<String>();
+
 		if (keyword == null) {
 			return linesFound;
 		} else {
 			keyword = keyword.toUpperCase();
 			int numOfLines = contents.size();
-				
+
 			for (int i = 0; i < numOfLines; i++) {
 				String content = contents.get(i);
 				content = content.toUpperCase();
@@ -338,7 +327,7 @@ public class TextBuddy {
 			return linesFound;
 		}
 	}
-	
+
 	/**
 	 * This method writes all existing content into the .txt file
 	 * 
