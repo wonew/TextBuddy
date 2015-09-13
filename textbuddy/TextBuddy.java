@@ -326,7 +326,6 @@ public class TextBuddy {
 				contents.add(newContent);
 				sortContents(contents);
 				writeExistingContent(bufferedWriter, contents, fileName);
-				// bufferedWriter.write(newContent);
 				System.out.println(String.format(MESSAGE_ADDED, fileName, newContent));
 				break;
 

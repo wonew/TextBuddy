@@ -3,19 +3,18 @@ package textbuddy;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
 public class TextBuddyTest {
 
-	private static final String SORTED_TEXT_1 = "Apple";
-	private static final String SORTED_TEXT_2 = "Banana";
-	private static final String SORTED_TEXT_3 = "Carrot";
-	private static final String SORTED_TEXT_4 = "Donkey";
-	private static final String SORTED_TEXT_5 = "Zebra";
+	private static final String SORTED_TEXT_1 = "Apple Seoul Carrot";
+	private static final String SORTED_TEXT_2 = "Amsterdam Copenhagen Stockholm";
+	private static final String SORTED_TEXT_3 = "Seoul Tokyo Singapore";
+	private static final String SORTED_TEXT_4 = "Football Skateboard Swimming";
+	private static final String SORTED_TEXT_5 = "Zebra Seoul Dog";
 	
-	
-
 	@Test
 	public void testIsSorted() {
 		
@@ -34,7 +33,21 @@ public class TextBuddyTest {
 		listToTest.add(SORTED_TEXT_2);
 		listToTest.add(SORTED_TEXT_1);
 		
+		Collections.sort(sortedList); // to make sure that this list to test against is sorted
+		
 		assertEquals(sortedList, TextBuddy.sortContents(listToTest));
 	}
-
+	
+	@Test
+	public void testSearch() {
+		
+		ArrayList<Integer> linesFound = new ArrayList<Integer>();
+		String searchKeyword = "Seoul";
+		
+		linesFound.add(2);
+		linesFound.add(4);
+		linesFound.add(5);
+		
+		assertEquals(linesFound, TextBuddy.search(searchKeyword));
+	}
 }
