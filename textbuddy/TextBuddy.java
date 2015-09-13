@@ -1,3 +1,19 @@
+/*
+ * CE2: add functionality + do it in TDD format + refactor code
+ * functionality 1: sort command to sort lines alphabetically
+ * Collections.sort()
+ * functionality 2: earch command to search for a word in the file and return the lines containing that word
+ * String.contains()
+ * How to do TDD
+ * 1) write a failing test
+ * 2) write out the new function
+ * 3) commit into github
+ * 4) see if the new function works
+ * 5) if it doesn't work, change your function
+ * 6) commit into github
+ * 7) see if the new function works
+ */
+
 package textbuddy;
 
 import java.io.*;
@@ -126,6 +142,10 @@ public class TextBuddy {
 		case "ADD":
 		case "DELETE":
 			String newContent = readNewContent(sc);
+			if (newContent.equals(MESSAGE_INVALID_FORMAT)) {
+				System.out.println(MESSAGE_INVALID_FORMAT);
+				break;
+			}
 			contents = readFile(nameOfFile);
 			writeFile(nameOfFile, contents, command, newContent);
 			break;
@@ -185,9 +205,17 @@ public class TextBuddy {
 	 * @see None.
 	 */
 	private static String readNewContent(Scanner sc) {
-		String newContent = sc.nextLine().substring(1);
-
+		
+		String newContent = "";
+		
+		try {
+			newContent = sc.nextLine().substring(1);
+		} catch (StringIndexOutOfBoundsException e) {
+			return MESSAGE_INVALID_FORMAT;
+		}
+	
 		return newContent;
+
 	}
 
 	/**
