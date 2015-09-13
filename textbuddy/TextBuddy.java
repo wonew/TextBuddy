@@ -70,7 +70,7 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE_ALL = "all content deleted from %1$s";
 	private static final String MESSAGE_DISPLAY_NUMBER = "%1$s. %2$s";
 	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
-
+	
 	/**
 	 * This is the main method which uses the command line argument to get the
 	 * user's input on what to name the .txt file.
@@ -287,7 +287,7 @@ public class TextBuddy {
 		ArrayList<Integer> linesFound = new ArrayList<Integer> ();
 		keyword = keyword.toUpperCase();
 		int numOfLines = contents.size();
-		
+			
 		for (int i = 0; i < numOfLines; i++) {
 			String content = contents.get(i);
 			content = content.toUpperCase();
@@ -295,8 +295,7 @@ public class TextBuddy {
 				linesFound.add(i+1);
 			}
 		}
-		
-		return linesFound;	
+		return linesFound;
 	}
 	
 	/**
