@@ -285,17 +285,22 @@ public class TextBuddy {
 	public static ArrayList<Integer> search (ArrayList<String> contents, String keyword) {
 		
 		ArrayList<Integer> linesFound = new ArrayList<Integer> ();
-		keyword = keyword.toUpperCase();
-		int numOfLines = contents.size();
-			
-		for (int i = 0; i < numOfLines; i++) {
-			String content = contents.get(i);
-			content = content.toUpperCase();
-			if (content.contains(keyword)) {
-				linesFound.add(i+1);
+		
+		if (keyword == null) {
+			return linesFound;
+		} else {
+			keyword = keyword.toUpperCase();
+			int numOfLines = contents.size();
+				
+			for (int i = 0; i < numOfLines; i++) {
+				String content = contents.get(i);
+				content = content.toUpperCase();
+				if (content.contains(keyword)) {
+					linesFound.add(i+1);
+				}
 			}
+			return linesFound;
 		}
-		return linesFound;
 	}
 	
 	/**
