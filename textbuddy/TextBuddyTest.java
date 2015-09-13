@@ -42,12 +42,21 @@ public class TextBuddyTest {
 	public void testSearch() {
 		
 		ArrayList<Integer> linesFound = new ArrayList<Integer>();
+		ArrayList<String> contents = new ArrayList<String>();
 		String searchKeyword = "Seoul";
+		
+		contents.add(SORTED_TEXT_5);
+		contents.add(SORTED_TEXT_4);
+		contents.add(SORTED_TEXT_3);
+		contents.add(SORTED_TEXT_2);
+		contents.add(SORTED_TEXT_1);
+		
+		Collections.sort(contents); // to make sure that this list to test against is sorted
 		
 		linesFound.add(2);
 		linesFound.add(4);
 		linesFound.add(5);
 		
-		assertEquals(linesFound, TextBuddy.search(searchKeyword));
+		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
 	}
 }

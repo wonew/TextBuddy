@@ -270,7 +270,35 @@ public class TextBuddy {
 		Collections.sort(contents);
 		return contents;
 	}
-
+	
+	/**
+	 * This method searches for specified keywords in the contents of the .txt file
+	 * 
+	 * @param contents
+	 *            Contains all existing content
+	 * @param keyword
+	 *            The keyword to be searched for
+	 * @return ArrayList<Integer> Returns the list of lines containing the specified keyword
+	 * @exception None.
+	 * @see None.
+	 */
+	public static ArrayList<Integer> search (ArrayList<String> contents, String keyword) {
+		
+		ArrayList<Integer> linesFound = new ArrayList<Integer> ();
+		keyword = keyword.toUpperCase();
+		int numOfLines = contents.size();
+		
+		for (int i = 0; i < numOfLines; i++) {
+			String content = contents.get(i);
+			content = content.toUpperCase();
+			if (content.contains(keyword)) {
+				linesFound.add(i+1);
+			}
+		}
+		
+		return linesFound;	
+	}
+	
 	/**
 	 * This method writes all existing content into the .txt file
 	 * 
