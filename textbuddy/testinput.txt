@@ -1,0 +1,32 @@
+TextBuddy mytextfile.txt
+Welcome to TextBuddy. mytextfile.txt is ready for use
+command: display
+command: harlow
+command: add Hey Jude, 
+command: add don't make it bad
+command: add Take a sad song and make it better
+command: display
+command: asdadsah
+command: display
+command: delete dog
+command: display
+command: delete 2
+command: display
+command: delete -1
+command: display
+command: delete 0
+command: display
+command: delete 8
+command: display
+command: clear
+command: display
+command: delete 2
+command: display
+command: add Hey Jude, don't be afraid
+command: add Hey Jude, don't let me down
+command: display
+command: delete 1
+command: display
+command: clear
+command: display
+command: exit

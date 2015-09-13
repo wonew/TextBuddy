@@ -1,0 +1,40 @@
+mytextfile.txt is empty
+Error: command not accepted. Please try again.
+added to mytextfile.txt: "Hey Jude, "
+added to mytextfile.txt: "don't make it bad"
+added to mytextfile.txt: "Take a sad song and make it better"
+1. Hey Jude, 
+2. don't make it bad
+3. Take a sad song and make it better
+Error: command not accepted. Please try again.
+1. Hey Jude, 
+2. don't make it bad
+3. Take a sad song and make it better
+Please enter a non-zero positive integer to delete line
+1. Hey Jude, 
+2. don't make it bad
+3. Take a sad song and make it better
+deleted from mytextfile.txt: "don't make it bad"
+1. Hey Jude, 
+2. Take a sad song and make it better
+Delete failed: The line does not exist.
+1. Hey Jude, 
+2. Take a sad song and make it better
+Delete failed: The line does not exist.
+1. Hey Jude, 
+2. Take a sad song and make it better
+Delete failed: The line does not exist.
+1. Hey Jude, 
+2. Take a sad song and make it better
+all content deleted from mytextfile.txt
+mytextfile.txt is empty
+There is nothing to delete in mytextfile.txt.
+mytextfile.txt is empty
+added to mytextfile.txt: "Hey Jude, don't be afraid"
+added to mytextfile.txt: "Hey Jude, don't let me down"
+1. Hey Jude, don't be afraid
+2. Hey Jude, don't let me down
+deleted from mytextfile.txt: "Hey Jude, don't be afraid"
+1. Hey Jude, don't let me down
+all content deleted from mytextfile.txt
+mytextfile.txt is empty
