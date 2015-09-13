@@ -1,19 +1,3 @@
-/*
- * CE2: add functionality + do it in TDD format + refactor code
- * functionality 1: sort command to sort lines alphabetically
- * Collections.sort()
- * functionality 2: earch command to search for a word in the file and return the lines containing that word
- * String.contains()
- * How to do TDD
- * 1) write a failing test
- * 2) write out the new function
- * 3) commit into github
- * 4) see if the new function works
- * 5) if it doesn't work, change your function
- * 6) commit into github
- * 7) see if the new function works
- */
-
 package textbuddy;
 
 import java.io.*;
@@ -24,15 +8,27 @@ import java.util.*;
  * into a .txt file using specified formats. The command format is given by the
  * example interaction below:
  * 
- * Welcome to TextBuddy. mytextfile.txt is ready for use command: add Hey Jude,
- * added to mytextfile.txt: "Hey Jude, " command: add don't make it bad added to
- * mytextfile.txt: "don't make it bad" command: add Take a sad song and make it
- * better added to mytextfile.txt: "Take a sad song and make it better" command:
- * display 1. Hey Jude, 2. don't make it bad 3. Take a sad song and make it
- * better command: delete 2 deleted from mytextfile.txt: "don't make it bad"
- * command: display 1. Hey Jude, 2. Take a sad song and make it better command:
- * clear all content deleted from mytextfile.txt command: display mytextfile.txt
- * is empty command: exit
+ * Welcome to TextBuddy. mytextfile.txt is ready for use
+ * command: add Hey Jude,
+ * added to mytextfile.txt: "Hey Jude, "
+ * command: add don't make it bad
+ * added to mytextfile.txt: "don't make it bad"
+ * command: add Take a sad song and make it better 
+ * added to mytextfile.txt: "Take a sad song and make it better"
+ * command: display
+ * 1. Hey Jude, 
+ * 2. don't make it bad 
+ * 3. Take a sad song and make it better 
+ * command: delete 2
+ * deleted from mytextfile.txt: "don't make it bad"
+ * command: display 
+ * 1. Hey Jude, 
+ * 2. Take a sad song and make it better 
+ * command: clear 
+ * all content deleted from mytextfile.txt
+ * command: display
+ * mytextfile.txt is empty
+ * command: exit
  * 
  *
  * @author June Lim
@@ -165,6 +161,8 @@ public class TextBuddy {
 
 			if (linesFound == null || keyword.equals(MESSAGE_INVALID_FORMAT)) {
 				System.out.println(ERROR_INVALID_SEARCH);
+			} else if (linesFound.get(0).equals("not found")) {
+				System.out.println("lines containing \"" + keyword + "\": not found");
 			} else {
 				printLinesFound(linesFound, keyword);
 			}
@@ -311,7 +309,7 @@ public class TextBuddy {
 
 		ArrayList<String> linesFound = new ArrayList<String>();
 
-		if (keyword == null) {
+		if (keyword == null || contents.size() == 0) {
 			return linesFound;
 		} else {
 			keyword = keyword.toUpperCase();
@@ -323,6 +321,10 @@ public class TextBuddy {
 				if (content.contains(keyword)) {
 					linesFound.add(contents.get(i));
 				}
+			}
+			
+			if (linesFound.size() == 0) {
+				linesFound.add("not found");
 			}
 			return linesFound;
 		}

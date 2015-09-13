@@ -101,7 +101,7 @@ public class TextBuddyTest {
 		contents.add(SORTED_TEXT_2);
 		contents.add(SORTED_TEXT_1);
 		
-		linesFound.add(searchKeyword + " not found.");
+		linesFound.add("not found");
 		
 		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
 	}
