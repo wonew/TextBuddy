@@ -41,7 +41,7 @@ public class TextBuddyTest {
 	@Test
 	public void testSearch() {
 		
-		ArrayList<Integer> linesFound = new ArrayList<Integer>();
+		ArrayList<String> linesFound = new ArrayList<String>();
 		ArrayList<String> contents = new ArrayList<String>();
 		String searchKeyword = "seoul";
 		
@@ -53,9 +53,9 @@ public class TextBuddyTest {
 		
 		Collections.sort(contents); // to make sure that this list to test against is sorted
 		
-		linesFound.add(2);
-		linesFound.add(4);
-		linesFound.add(5);
+		linesFound.add(SORTED_TEXT_1);
+		linesFound.add(SORTED_TEXT_3);
+		linesFound.add(SORTED_TEXT_5);
 		
 		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
 	}
@@ -64,7 +64,7 @@ public class TextBuddyTest {
 	public void testNullSearchKeyword() {
 		
 		ArrayList<String> contents = new ArrayList<String>();
-		ArrayList<Integer> linesFound = new ArrayList<Integer>();
+		ArrayList<String> linesFound = new ArrayList<String>();
 		String searchKeyword = null;
 		
 		contents.add(SORTED_TEXT_5);
@@ -82,7 +82,7 @@ public class TextBuddyTest {
 	public void testNullContentArraylist() {
 		
 		ArrayList<String> contents = new ArrayList<String>();
-		ArrayList<Integer> linesFound = new ArrayList<Integer>();
+		ArrayList<String> linesFound = new ArrayList<String>();
 		String searchKeyword = "stockholm";
 		
 		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword)); // returns null ArrayList

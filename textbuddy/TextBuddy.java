@@ -70,6 +70,7 @@ public class TextBuddy {
 	private static final String MESSAGE_DELETE_ALL = "all content deleted from %1$s";
 	private static final String MESSAGE_DISPLAY_NUMBER = "%1$s. %2$s";
 	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
+	private static final String ERROR_INVALID_SEARCH = "You have entered an invalid search keyword. Please try again.";
 	
 	/**
 	 * This is the main method which uses the command line argument to get the
@@ -167,6 +168,18 @@ public class TextBuddy {
 			contents = readFile(nameOfFile);
 			writeFile(nameOfFile, contents, command, "");
 			break;
+			
+		case "SEARCH":
+			// call search function and print out the lines that contains the search keyword
+			contents = readFile(nameOfFile);
+			String keyword = readNewContent(sc);
+			ArrayList<String> linesFound = search(contents, keyword);
+			
+			if (linesFound == null) {
+				System.out.println(ERROR_INVALID_SEARCH);
+			} else {
+				printLinesFound(linesFound, keyword);
+			}
 
 		case "EXIT":
 			System.exit(0); // terminate program
@@ -177,6 +190,29 @@ public class TextBuddy {
 		}
 	}
 
+	/**
+	 * This method prints out the lines that contains the search keyword
+	 * 
+	 * @param sc
+	 *            The Scanner pointer created in the main method to scan for
+	 *            user input
+	 * @return String The command that is read from user input
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void printLinesFound(ArrayList<String> linesFound, String keyword) {
+		int numOfLines = linesFound.size();
+		
+		System.out.print("Lines containing " + keyword + ": ");
+		for (int i = 0; i < numOfLines; i++) {
+			if (i+1 == numOfLines) {
+				System.out.print((i+1) + linesFound.get(i));
+				System.out.println();
+			}
+			System.out.print((i+1) + linesFound.get(i) + ", ");
+		}
+	}
+	
 	/**
 	 * This method reads the cammands from the user and converts the entire
 	 * String into upper case
@@ -282,9 +318,9 @@ public class TextBuddy {
 	 * @exception None.
 	 * @see None.
 	 */
-	public static ArrayList<Integer> search (ArrayList<String> contents, String keyword) {
+	public static ArrayList<String> search (ArrayList<String> contents, String keyword) {
 		
-		ArrayList<Integer> linesFound = new ArrayList<Integer> ();
+		ArrayList<String> linesFound = new ArrayList<String> ();
 		
 		if (keyword == null) {
 			return linesFound;
@@ -296,7 +332,7 @@ public class TextBuddy {
 				String content = contents.get(i);
 				content = content.toUpperCase();
 				if (content.contains(keyword)) {
-					linesFound.add(i+1);
+					linesFound.add(contents.get(i));
 				}
 			}
 			return linesFound;
