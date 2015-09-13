@@ -173,6 +173,7 @@ public class TextBuddy {
 
 		default:
 			System.out.println(MESSAGE_INVALID_FORMAT);
+			sc.nextLine(); // just read in the remaining whatever the user typed so that user can try again
 			break;
 		}
 	}
