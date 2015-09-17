@@ -54,6 +54,9 @@ public class TextBuddy {
 	private static final String MESSAGE_DISPLAY_NUMBER = "%1$s. %2$s";
 	private static final String MESSAGE_INVALID_DELETE_ARGUMENT = "Please enter a non-zero positive integer to delete line";
 	private static final String ERROR_INVALID_SEARCH = "You have entered an invalid search keyword. Please try again.";
+	private static final String MESSAGE_NOT_FOUND = "not found";
+	private static final String MESSAGE_LINES_NOT_FOUND = "lines containing \"%1$s\": not found";
+	private static final String MESSAGE_LINES_CONTAINING = "Lines containing \"%1$s\": ";
 
 	/**
 	 * This is the main method which uses the command line argument to get the
@@ -93,7 +96,7 @@ public class TextBuddy {
 
 		File file = new File(fileName);
 
-		if (!(file.exists())) {
+		if ( !(file.exists()) ) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -126,55 +129,138 @@ public class TextBuddy {
 		case "ADD":
 		case "DELETE":
 			String newContent = readNewContent(sc);
-			if (newContent.equals(MESSAGE_INVALID_FORMAT)) {
-				System.out.println(MESSAGE_INVALID_FORMAT);
+			if (isInvalidFormat(newContent)) {
 				break;
+			} else {
+				executeAddDelete(nameOfFile, command, contents, newContent);
 			}
-			contents = readFile(nameOfFile);
-			writeFile(nameOfFile, contents, command, newContent);
 			break;
 
 		case "DISPLAY":
-			// call readFile function and display the whole file
-			contents = readFile(nameOfFile);
-			int numOfLines = contents.size();
-			if (numOfLines == 0) {
-				System.out.println(String.format(MESSAGE_EMPTY_FILE, nameOfFile));
-			}
-			for (int i = 0; i < numOfLines; i++) {
-				System.out.println(String.format(MESSAGE_DISPLAY_NUMBER, (i + 1), contents.get(i)));
-			}
+			executeDisplay(nameOfFile, contents);
 			break;
 
 		case "CLEAR":
-			// call writeFile function and clear the file
-			contents = readFile(nameOfFile);
-			writeFile(nameOfFile, contents, command, "");
+			excecuteClear(nameOfFile, contents, command);
 			break;
 
 		case "SEARCH":
-			// call search function and print out the lines that contains the
-			// search keyword
-			contents = readFile(nameOfFile);
-			String keyword = readNewContent(sc);
-			ArrayList<String> linesFound = search(contents, keyword);
-
-			if (linesFound == null || keyword.equals(MESSAGE_INVALID_FORMAT)) {
-				System.out.println(ERROR_INVALID_SEARCH);
-			} else if (linesFound.get(0).equals("not found")) {
-				System.out.println("lines containing \"" + keyword + "\": not found");
-			} else {
-				printLinesFound(linesFound, keyword);
-			}
+			executeSearch(sc, nameOfFile, contents);
 			break;
 
 		case "EXIT":
-			System.exit(0); // terminate program
+			System.exit(0);
 
 		default:
 			System.out.println(MESSAGE_INVALID_FORMAT);
-			sc.nextLine(); // just read in the remaining whatever the user typed so that user can try again
+			sc.nextLine(); // read in the remaining whatever the user typed so that user can try again
 			break;
+		}
+	}
+	
+	/**
+	 * This method determines whether the input for the add and delete commands are valid or not
+	 * and prints out an error message if the inputs are invalid
+	 * 
+	 * @param newContent
+	 *            The new content to be added or deleted
+	 * @return boolean
+	 *            Whether the format is valid or not
+	 * @exception None.
+	 * @see None.
+	 */
+	private static boolean isInvalidFormat(String newContent) {
+		if (newContent.equals(MESSAGE_INVALID_FORMAT)) {
+			System.out.println(MESSAGE_INVALID_FORMAT);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * This method executes the adding and deleting of content
+	 * 
+	 * @param nameOfFile
+	 *            The name of the file to write to
+	 * @param command
+	 *            The add or delete command
+	 * @param contents
+	 *            The existing content in the file
+	 * @param newContent
+	 *            The new content to be added or deleted
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void executeAddDelete(String nameOfFile, String command, ArrayList<String> contents, String newContent) {
+		contents = readFile(nameOfFile);
+		writeFile(nameOfFile, contents, command, newContent);
+	}
+	
+	/**
+	 * This method executes the display feature to display all existing content
+	 * 
+	 * @param nameOfFile
+	 *            The name of the file to display
+	 * @param contents
+	 *            The existing content in the file
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void executeDisplay(String nameOfFile, ArrayList<String> contents) {
+		contents = readFile(nameOfFile);
+		int numOfLines = contents.size();
+		if (numOfLines == 0) {
+			System.out.println(String.format(MESSAGE_EMPTY_FILE, nameOfFile));
+		}
+		for (int i = 0; i < numOfLines; i++) {
+			System.out.println(String.format(MESSAGE_DISPLAY_NUMBER, (i + 1), contents.get(i)));
+		}
+	}
+	
+	/**
+	 * This method executes the clear feature to clear all existing content
+	 * 
+	 * @param nameOfFile
+	 *            The name of the file to display
+	 * @param contents
+	 *            The existing content in the file
+	 * @param command
+	 *            The command to clear all existing content in the file
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void excecuteClear(String nameOfFile, ArrayList<String> contents, String command) {
+		contents = readFile(nameOfFile);
+		writeFile(nameOfFile, contents, command, "");
+	}
+	
+	/**
+	 * This method executes the search feature to search for content in the file using keywords
+	 * 
+	 * @param sc
+	 *            The scanner object to read in the search keyword
+	 * @param contents
+	 *            The existing content in the file
+	 * @param contents
+	 *           The existing content in the file
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void executeSearch(Scanner sc, String nameOfFile, ArrayList<String> contents) {
+		contents = readFile(nameOfFile);
+		String keyword = readNewContent(sc);
+		ArrayList<String> linesFound = search(contents, keyword);
+	
+		if (linesFound == null || keyword.equals(MESSAGE_INVALID_FORMAT)) {
+			System.out.println(ERROR_INVALID_SEARCH);
+		} else if (linesFound.get(0).equals(MESSAGE_NOT_FOUND)) {
+			System.out.println(String.format(MESSAGE_LINES_NOT_FOUND, keyword));
+		} else {
+			printSearchResult(linesFound, keyword);
 		}
 	}
 
@@ -189,12 +275,13 @@ public class TextBuddy {
 	 * @exception None.
 	 * @see None.
 	 */
-	private static void printLinesFound(ArrayList<String> linesFound, String keyword) {
+	private static void printSearchResult(ArrayList<String> linesFound, String keyword) {
+		
 		int numOfLines = linesFound.size();
 
-		System.out.println("Lines containing " + keyword + ": ");
+		System.out.println(String.format(MESSAGE_LINES_CONTAINING, keyword));
 		for (int i = 0; i < numOfLines; i++) {
-			System.out.println((i + 1) + ". " + linesFound.get(i));
+			System.out.println(String.format(MESSAGE_DISPLAY_NUMBER, (i + 1), linesFound.get(i)));
 		}
 	}
 
@@ -210,8 +297,8 @@ public class TextBuddy {
 	 * @see None.
 	 */
 	private static String readCommand(Scanner sc) {
+		
 		String command = sc.next().toUpperCase();
-
 		return command;
 	}
 
@@ -256,12 +343,10 @@ public class TextBuddy {
 	private static ArrayList<String> readFile(String fileName) {
 
 		ArrayList<String> contents = new ArrayList<String>();
-
 		String line = null; // reference one line at a time
 
 		try {
 			FileReader fileReader = new FileReader(fileName);
-
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 			while ((line = bufferedReader.readLine()) != null) {
@@ -275,6 +360,7 @@ public class TextBuddy {
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_READ_FILE_ERROR, fileName));
 		}
+		
 		return contents;
 	}
 
@@ -301,7 +387,7 @@ public class TextBuddy {
 	 *            Contains all existing content
 	 * @param keyword
 	 *            The keyword to be searched for
-	 * @return ArrayList<Integer> Returns the list of lines containing the
+	 * @return ArrayList<String> Returns the list of lines containing the
 	 *         specified keyword
 	 * @exception None.
 	 * @see None.
@@ -325,7 +411,7 @@ public class TextBuddy {
 			}
 			
 			if (linesFound.size() == 0) {
-				linesFound.add("not found");
+				linesFound.add(MESSAGE_NOT_FOUND);
 			}
 			return linesFound;
 		}
@@ -378,48 +464,23 @@ public class TextBuddy {
 
 		try {
 			FileWriter fileWriter = new FileWriter(fileName);
-
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
 			switch (command) {
 			case "ADD":
-				contents.add(newContent);
-				sortContents(contents);
-				writeExistingContent(bufferedWriter, contents, fileName);
-				System.out.println(String.format(MESSAGE_ADDED, fileName, newContent));
+				writeAdd(contents, newContent, bufferedWriter, fileName);
 				break;
 
 			case "DELETE":
-				// delete that line number from arraylist, write into file
-				int numOfLines = contents.size();
-				int lineToDelete = 0;
-
-				// to check if newContent is a valid integer or not
-				try {
-					lineToDelete = Integer.parseInt(newContent);
-				} catch (NumberFormatException e) {
-					// still write whatever you already have into the text file
-					writeExistingContent(bufferedWriter, contents, fileName);
-					System.out.println(MESSAGE_INVALID_DELETE_ARGUMENT);
+				if ( !(isValidDelete(newContent, contents, fileName, bufferedWriter)) ) {
 					break;
-				}
-
-				if (numOfLines == 0 && lineToDelete > 0) {
-					System.out.println(String.format(MESSAGE_NO_CONTENT_TO_DELETE, fileName));
-				} else if (lineToDelete > numOfLines || lineToDelete <= 0) {
-					writeExistingContent(bufferedWriter, contents, fileName);
-					System.out.println(String.format(MESSAGE_INVALID_DELETE));
 				} else {
-					String removedElement = contents.remove(lineToDelete - 1);
-					writeExistingContent(bufferedWriter, contents, fileName);
-					System.out.println(String.format(MESSAGE_DELETED_LINE, fileName, removedElement));
+					writeDelete(bufferedWriter, contents, fileName, newContent);
 				}
 				break;
 
 			case "CLEAR":
-				File file = new File(fileName);
-				file.createNewFile();
-				System.out.println(String.format(MESSAGE_DELETE_ALL, fileName));
+				writeClear(fileName);
 				break;
 			}
 
@@ -429,4 +490,115 @@ public class TextBuddy {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
 		}
 	}
+	
+	/**
+	 * This method writes new content into the file and displays a confirmation message
+	 * that the new content has been successfully added
+	 * 
+	 * @param contents
+	 *            The existing content in the file
+	 * @param newContent
+	 *            The new content to be added
+	 * @param bufferedWriter
+	 *            The BufferedWriter object to write content into the file
+	 * @param fileName
+	 *            The name of the file to be written into
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void writeAdd (ArrayList<String> contents, String newContent, BufferedWriter bufferedWriter, String fileName) {
+		
+		contents.add(newContent);
+		sortContents(contents);
+		writeExistingContent(bufferedWriter, contents, fileName);
+		System.out.println(String.format(MESSAGE_ADDED, fileName, newContent));
+	}
+	
+	/**
+	 * This method determines whether the delete parameter specified by the user is valid or not
+	 * and displays a message if the delete parameter is invalid
+	 * 
+	 * @param newContent
+	 *            The new content to be deleted
+	 * @param contents
+	 *            The existing content in the file
+	 * @param fileName
+	 *            The name of the file to delete the content from
+	 * @param bufferedWriter
+	 *            The BufferedWriter object to delete content from the file
+	 * @return boolean
+	 *            Whether the delete parameter is valid or not
+	 * @exception None.
+	 * @see None.
+	 */
+	private static boolean isValidDelete(String newContent, ArrayList<String> contents, String fileName, BufferedWriter bufferedWriter) {
+		
+		try {
+			Integer.parseInt(newContent); // check if newContent is a valid integer
+			return true;
+		} catch (NumberFormatException e) {
+			// still write whatever you already have into the text file
+			writeExistingContent(bufferedWriter, contents, fileName);
+			System.out.println(MESSAGE_INVALID_DELETE_ARGUMENT);
+			return false;
+		}
+	}
+	
+	/**
+	 * This method deletes the content specified by the user and displays error messages
+	 * if the delete parameter is illogical (e.g. if there is no content to delete or
+	 * if the line to delete does not exist). If the line to delete is valid, the file
+	 * will be updated and a confirmation message will be displayed
+	 * 
+	 * @param bufferedWriter
+	 *            The BufferedWriter object to delete content from the file
+	 * @param contents
+	 *            The existing content in the file
+	 * @param fileName
+	 *            The name of the file to delete the content from
+	 * @param newContent
+	 *            The new content to be deleted
+	 * @return None.
+	 * @exception None.
+	 * @see None.
+	 */
+	private static void writeDelete(BufferedWriter bufferedWriter, ArrayList<String> contents, String fileName, String newContent) {
+		
+		int numOfLines = contents.size();
+		int lineToDelete = Integer.parseInt(newContent);
+	
+		if (numOfLines == 0 && lineToDelete > 0) {
+			System.out.println(String.format(MESSAGE_NO_CONTENT_TO_DELETE, fileName));
+		} else if (lineToDelete > numOfLines || lineToDelete <= 0) {
+			writeExistingContent(bufferedWriter, contents, fileName);
+			System.out.println(String.format(MESSAGE_INVALID_DELETE));
+		} else {
+			String removedElement = contents.remove(lineToDelete - 1);
+			writeExistingContent(bufferedWriter, contents, fileName);
+			System.out.println(String.format(MESSAGE_DELETED_LINE, fileName, removedElement));
+		}
+	}
+	
+	/**
+	 * This method clears the file of all content.
+	 * 
+	 * @param fileName
+	 *            The name of the file to clear the content from
+	 * @return None.
+	 * @exception IOException
+	 *                On writing file.
+	 * @see IOException
+	 */
+	private static void writeClear(String fileName) {
+		
+		try {
+			File file = new File(fileName);
+			file.createNewFile();
+			System.out.println(String.format(MESSAGE_DELETE_ALL, fileName));
+		} catch (IOException ex) {
+			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
+		}
+	}
+
 }
