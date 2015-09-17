@@ -15,6 +15,10 @@ public class TextBuddyTest {
 	private static final String SORTED_TEXT_4 = "Football Skateboard Swimming";
 	private static final String SORTED_TEXT_5 = "Zebra Seoul Dog";
 	
+	private static final String MESSAGE_ADDED = "added to %1$s: \"%2$s\"";
+	private static final String MESSAGE_DELETED_LINE = "deleted from %1$s: \"%2$s\"";
+	private static final String MESSAGE_DELETE_ALL = "all content deleted from %1$s";
+	
 	@Test
 	public void testIsSorted() {
 		
@@ -104,5 +108,60 @@ public class TextBuddyTest {
 		linesFound.add("not found");
 		
 		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
+	}
+	
+	@Test
+	public void testAdd() {
+		
+		ArrayList<String> contents = new ArrayList<String>();
+		String newContent = "paris baguette";
+		String fileName = "mytextfile";
+		
+		contents.add(SORTED_TEXT_5);
+		contents.add(SORTED_TEXT_4);
+		contents.add(SORTED_TEXT_3);
+		contents.add(SORTED_TEXT_2);
+		contents.add(SORTED_TEXT_1);
+		
+		assertEquals(String.format(MESSAGE_ADDED, fileName, newContent), 
+				TextBuddy.writeFile(fileName, contents, "ADD", newContent));
+	}
+	
+	@Test
+	public void testDelete() {
+		
+		ArrayList<String> contents = new ArrayList<String>();
+		String removedElement = SORTED_TEXT_2;
+		String fileName = "mytextfile";
+		
+		contents.add(SORTED_TEXT_5);
+		contents.add(SORTED_TEXT_4);
+		contents.add(SORTED_TEXT_3);
+		contents.add(SORTED_TEXT_2);
+		contents.add(SORTED_TEXT_1);
+		
+		Collections.sort(contents); // to make sure that this list to test against is sorted
+		
+		assertEquals(String.format(MESSAGE_DELETED_LINE, fileName, removedElement), 
+				TextBuddy.writeFile(fileName, contents, "DELETE", "1"));
+	}
+	
+	@Test
+	public void testClear() {
+		
+		ArrayList<String> contents = new ArrayList<String>();
+		String fileName = "mytextfile";
+		
+		contents.add(SORTED_TEXT_5);
+		contents.add(SORTED_TEXT_4);
+		contents.add(SORTED_TEXT_3);
+		contents.add(SORTED_TEXT_2);
+		contents.add(SORTED_TEXT_1);
+		
+		Collections.sort(contents); // to make sure that this list to test against is sorted
+		
+		assertEquals(String.format(MESSAGE_DELETE_ALL, fileName), 
+				TextBuddy.writeFile(fileName, contents, "CLEAR", ""));
+	
 	}
 }

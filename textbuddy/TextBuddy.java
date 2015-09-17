@@ -455,40 +455,43 @@ public class TextBuddy {
 	 *            The command to edit the file
 	 * @param newContent
 	 *            Contains the new content to be modified into the .txt file
-	 * @return Nothing.
+	 * @return String Outcome of whether the content has been added/deleted/cleared
 	 * @exception IOException
 	 *                On writing file.
 	 * @see IOException
 	 */
-	private static void writeFile(String fileName, ArrayList<String> contents, String command, String newContent) {
+	protected static String writeFile(String fileName, ArrayList<String> contents, String command, String newContent) {
 
+		String result = "";
+		
 		try {
 			FileWriter fileWriter = new FileWriter(fileName);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
+			
 			switch (command) {
 			case "ADD":
-				writeAdd(contents, newContent, bufferedWriter, fileName);
+				result = writeAdd(contents, newContent, bufferedWriter, fileName);
 				break;
 
 			case "DELETE":
 				if ( !(isValidDelete(newContent, contents, fileName, bufferedWriter)) ) {
 					break;
 				} else {
-					writeDelete(bufferedWriter, contents, fileName, newContent);
+					result = writeDelete(bufferedWriter, contents, fileName, newContent);
 				}
 				break;
 
 			case "CLEAR":
-				writeClear(fileName);
+				result = writeClear(fileName);
 				break;
 			}
-
+			
 			bufferedWriter.close();
 
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
 		}
+		return result;
 	}
 	
 	/**
@@ -503,16 +506,17 @@ public class TextBuddy {
 	 *            The BufferedWriter object to write content into the file
 	 * @param fileName
 	 *            The name of the file to be written into
-	 * @return None.
+	 * @return String Confirmation message that the new content has been added
 	 * @exception None.
 	 * @see None.
 	 */
-	private static void writeAdd (ArrayList<String> contents, String newContent, BufferedWriter bufferedWriter, String fileName) {
+	protected static String writeAdd (ArrayList<String> contents, String newContent, BufferedWriter bufferedWriter, String fileName) {
 		
 		contents.add(newContent);
 		sortContents(contents);
 		writeExistingContent(bufferedWriter, contents, fileName);
 		System.out.println(String.format(MESSAGE_ADDED, fileName, newContent));
+		return String.format(MESSAGE_ADDED, fileName, newContent);
 	}
 	
 	/**
@@ -559,24 +563,27 @@ public class TextBuddy {
 	 *            The name of the file to delete the content from
 	 * @param newContent
 	 *            The new content to be deleted
-	 * @return None.
+	 * @return String Confirmation of whether the line has been successfully deleted
 	 * @exception None.
 	 * @see None.
 	 */
-	private static void writeDelete(BufferedWriter bufferedWriter, ArrayList<String> contents, String fileName, String newContent) {
+	private static String writeDelete(BufferedWriter bufferedWriter, ArrayList<String> contents, String fileName, String newContent) {
 		
 		int numOfLines = contents.size();
 		int lineToDelete = Integer.parseInt(newContent);
 	
 		if (numOfLines == 0 && lineToDelete > 0) {
 			System.out.println(String.format(MESSAGE_NO_CONTENT_TO_DELETE, fileName));
+			return String.format(MESSAGE_NO_CONTENT_TO_DELETE, fileName);
 		} else if (lineToDelete > numOfLines || lineToDelete <= 0) {
 			writeExistingContent(bufferedWriter, contents, fileName);
 			System.out.println(String.format(MESSAGE_INVALID_DELETE));
+			return String.format(MESSAGE_INVALID_DELETE);
 		} else {
 			String removedElement = contents.remove(lineToDelete - 1);
 			writeExistingContent(bufferedWriter, contents, fileName);
 			System.out.println(String.format(MESSAGE_DELETED_LINE, fileName, removedElement));
+			return String.format(MESSAGE_DELETED_LINE, fileName, removedElement);
 		}
 	}
 	
@@ -585,19 +592,21 @@ public class TextBuddy {
 	 * 
 	 * @param fileName
 	 *            The name of the file to clear the content from
-	 * @return None.
+	 * @return String Confirmation of whether all content in the file has been successfully cleared
 	 * @exception IOException
 	 *                On writing file.
 	 * @see IOException
 	 */
-	private static void writeClear(String fileName) {
+	private static String writeClear(String fileName) {
 		
 		try {
 			File file = new File(fileName);
 			file.createNewFile();
 			System.out.println(String.format(MESSAGE_DELETE_ALL, fileName));
+			return String.format(MESSAGE_DELETE_ALL, fileName);
 		} catch (IOException ex) {
 			System.out.println(String.format(MESSAGE_WRITE_FILE_ERROR, fileName));
+			return String.format(MESSAGE_WRITE_FILE_ERROR, fileName);
 		}
 	}
 
