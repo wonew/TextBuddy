@@ -39,7 +39,7 @@ public class TextBuddyTest {
 		
 		Collections.sort(sortedList); // to make sure that this list to test against is sorted
 		
-		assertEquals(sortedList, TextBuddy.sortContents(listToTest));
+		assertEquals(sortedList, TextBuddyFeatures.sortContents(listToTest));
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class TextBuddyTest {
 		linesFound.add(SORTED_TEXT_3);
 		linesFound.add(SORTED_TEXT_5);
 		
-		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
+		assertEquals(linesFound, TextBuddyFeatures.search(contents, searchKeyword));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class TextBuddyTest {
 		
 		Collections.sort(contents); // to make sure that this list to test against is sorted
 		
-		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword)); // returns null ArrayList
+		assertEquals(linesFound, TextBuddyFeatures.search(contents, searchKeyword)); // returns null ArrayList
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class TextBuddyTest {
 		ArrayList<String> linesFound = new ArrayList<String>();
 		String searchKeyword = "stockholm";
 		
-		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword)); // returns null ArrayList
+		assertEquals(linesFound, TextBuddyFeatures.search(contents, searchKeyword)); // returns null ArrayList
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class TextBuddyTest {
 		
 		linesFound.add("not found");
 		
-		assertEquals(linesFound, TextBuddy.search(contents, searchKeyword));
+		assertEquals(linesFound, TextBuddyFeatures.search(contents, searchKeyword));
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ public class TextBuddyTest {
 		contents.add(SORTED_TEXT_1);
 		
 		assertEquals(String.format(MESSAGE_ADDED, fileName, newContent), 
-				TextBuddy.writeFile(fileName, contents, "ADD", newContent));
+				TextBuddyWriter.writeFile(fileName, contents, "ADD", newContent));
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class TextBuddyTest {
 		Collections.sort(contents); // to make sure that this list to test against is sorted
 		
 		assertEquals(String.format(MESSAGE_DELETED_LINE, fileName, removedElement), 
-				TextBuddy.writeFile(fileName, contents, "DELETE", "1"));
+				TextBuddyWriter.writeFile(fileName, contents, "DELETE", "1"));
 	}
 	
 	@Test
@@ -161,7 +161,7 @@ public class TextBuddyTest {
 		Collections.sort(contents); // to make sure that this list to test against is sorted
 		
 		assertEquals(String.format(MESSAGE_DELETE_ALL, fileName), 
-				TextBuddy.writeFile(fileName, contents, "CLEAR", ""));
+				TextBuddyWriter.writeFile(fileName, contents, "CLEAR", ""));
 	
 	}
 }
